@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allow-credentials: true
+            allowed-origins:
+              - "https://yogiting.com"
+            allowed-headers:
+              - "*"
+            allowed-methods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - PATCH
+              - OPTIONS
+      default-filters:
+        - name: JwtAuthFilter
+      routes:
+        - id: yogiting-api
+          uri: http://10.104.0.2:8082
+          predicates:
+            - Path=/v1/api/**
+
+        - id: yogiting-auth
+          uri: http://10.104.0.2:8081
+          predicates:
+            - Path=/v1/auth/**
+
+jwt:
+  secretKey: b2F1dGhzZXJ2ZXJzZWNyZXRhY2Nlc3N0b2tlbm9hdXRoc2VydmVyc2VjcmV0YWNjZXNzdG9rZW5vYXV0aHNlcnZlcnNlY3JldGFjY2Vzc3Rva2Vu
